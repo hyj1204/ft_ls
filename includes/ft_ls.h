@@ -6,7 +6,7 @@
 /*   By: yijhuang <yijhuang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/05 17:34:43 by yijhuang          #+#    #+#             */
-/*   Updated: 2019/07/22 19:47:40 by yijhuang         ###   ########.fr       */
+/*   Updated: 2019/07/22 21:27:56 by yijhuang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ char			*fix_path(char *dir_name, char *d_name);
 void			add_list(t_arg **list, t_arg *tmp);
 
 //ft_ls
-void print_list(t_arg *head); //only for test
+// void print_list(t_arg *head); //only for test
 void 			ft_ls(char *arg_name, t_flag *flags);
 void			free_list(t_arg **list);
 
