@@ -6,7 +6,7 @@
 /*   By: yijhuang <yijhuang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/12 22:47:47 by yijhuang          #+#    #+#             */
-/*   Updated: 2019/07/20 01:49:09 by yijhuang         ###   ########.fr       */
+/*   Updated: 2019/07/22 17:25:08 by yijhuang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,10 +115,10 @@ void		print_arg(t_arg *list, t_size size, t_flag *flags)
 	}
 	else 
 		print_name(list, size.f_name + 3);
-	if (!list->next) //如果是显示的最后一个对象的话，就跳过。不显示回车。
-		list->next = NULL;
-	else if ((flags->one || flags->l) && list->next) 
+	if ((flags->one || flags->l) && list->next)
 		ft_putchar('\n');
+	else if (!list->next) //如果是显示的最后一个对象的话，就跳过。不显示回车。
+		list->next = NULL;
 	else
 		ft_putchar(' ');
 }

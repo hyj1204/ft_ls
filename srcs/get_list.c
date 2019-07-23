@@ -6,7 +6,7 @@
 /*   By: yijhuang <yijhuang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/09 22:34:48 by yijhuang          #+#    #+#             */
-/*   Updated: 2019/07/20 01:44:39 by yijhuang         ###   ########.fr       */
+/*   Updated: 2019/07/22 09:42:09 by yijhuang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,14 @@ int			get_list(t_arg **obj_list, char *arg_name, t_flag *flags)
 			ft_printf("ls: %s: ", arg_name);
 			perror(NULL); //当没有这个文件名的时候，显示错误信息,结尾会有回车
 		}
+		else if (flags->R || flags->l)
+		{
+			errno;
+		}
 		else if (!(flags->R) && errno == 13)
 		{
 			ft_printf("ls: %s: %s", arg_name, strerror(errno));
 			//当没有权限接入的时候，显示报错信息，结尾没有回车
-		}
-		else if (flags->R)
-		{
-			errno;
 		}
 		else
 		{

@@ -6,7 +6,7 @@
 /*   By: yijhuang <yijhuang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/05 17:34:43 by yijhuang          #+#    #+#             */
-/*   Updated: 2019/07/20 01:55:54 by yijhuang         ###   ########.fr       */
+/*   Updated: 2019/07/22 14:51:40 by yijhuang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef struct	s_size
 
 # define MAX(x, y) x > y ? x : y
 
+int				f_amount;
 //for get_flags
 char			not_flag_char; //不是flag字符而是个普通字符,则用全局变量保存这个字符，用于之后显示报错信息函数用
 int				arg_index;
@@ -84,7 +85,7 @@ char			*fix_path(char *dir_name, char *d_name);
 void			add_list(t_arg **list, t_arg *tmp);
 
 //ft_ls
-// void print_list(t_arg *head); //only for test
+void print_list(t_arg *head); //only for test
 void 			ft_ls(char *arg_name, t_flag *flags);
 void			free_list(t_arg **list);
 

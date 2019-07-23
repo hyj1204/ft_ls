@@ -6,21 +6,21 @@
 /*   By: yijhuang <yijhuang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/07 13:17:12 by yijhuang          #+#    #+#             */
-/*   Updated: 2019/07/20 01:36:00 by yijhuang         ###   ########.fr       */
+/*   Updated: 2019/07/22 17:29:43 by yijhuang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
 
-// void print_list(t_arg *head) {
-//     t_arg *current_node;
-//     current_node = head;
-//    	while (current_node) 
-//     { 
-//         ft_printf("list obj = %s\n", current_node->name);
-//         current_node = current_node->next;
-//     }
-// } //for test
+void print_list(t_arg *head) {
+    t_arg *current_node;
+    current_node = head;
+   	while (current_node) 
+    { 
+        ft_printf("list obj = %s\n", current_node->name);
+        current_node = current_node->next;
+    }
+} //for test
 
 static void		recur(t_arg *obj_list, t_flag *flags)
 {
@@ -60,33 +60,48 @@ void ft_ls(char *arg_name, t_flag *flags)
     t_arg   *obj_list;
 	int     total;
     t_size  size;
-    int size1;
-    int size2;
     static int sub;
+    static int last_have_file;
+    static int first_dir;
 
-    size1 = 10;
-    size2 = 8;
+   
     obj_list = NULL;
     total = get_list(&obj_list, arg_name, flags);//把所有的输入参数（名字）对象，建立一个链表
     // print_list(obj_list);
 	sort_list(&obj_list, flags);
     // ft_printf("after_sort\n");
-    // print_list(obj_list);s
-    if (sub && flags->R)//当R在子文件夹的状态下
-    {
-		// ft_printf("%s:\n", &arg_name[ft_strncmp(arg_name, "././", 4) ? 0 : 2]);
-        ft_printf("%s:\n", arg_name);
+    // print_list(obj_list);
+    if (sub && flags->R)//当R在子文件夹的状态下，显示各个子文件夹的名字
+    {   
+        if (first_dir == 0)
+        {
+            ft_printf("\n");
+            ft_printf("%s:\n", arg_name);
+            first_dir = 1;
+        }
+        else
+        {
+            if (last_have_file == 1)
+                ft_printf("\n");
+            ft_printf("%s:\n", arg_name);
+        }
+        if (total)
+                last_have_file = 1;
+            else if (!total && obj_list)
+                last_have_file = 1;
+            else
+                last_have_file = 0;
     }
-    if (total && obj_list && flags->l)
+    if (obj_list && flags->l)
         ft_printf("total %d\n", total);
     check_list = obj_list;
 	size = set_size(obj_list); //给t_size结构赋值，获得各个需要显示对象的长度len,用于-l时显示
     // ft_printf("w_cols = %d\n", size.w_cols);
-
     print_objs(check_list, size, flags);
-    if (total == 0 && errno) //如果之前读取这个文件夹时产生错误信息的情况下
+    //下面如果R和l同时存在的话，会继续显示下一层的文件夹（实际没有了），从而产生不必要的报错。 
+    if (total == 0 && errno == 13 && flags->R && flags->l) //如果之前读取这个文件夹时产生错误信息的情况下
     {
-        while (*arg_name == '.' || *arg_name == '/')
+        while (*arg_name == '.'|| *arg_name == '/') //错误信息不需要显示./
             arg_name++;
         ft_printf("ls: %s: ", arg_name);
         perror(NULL); 
@@ -94,8 +109,9 @@ void ft_ls(char *arg_name, t_flag *flags)
     sub = 1;
 	if (flags->R)
     {
-        (!(size.f_name))? 0:ft_putchar('\n'); //如果文件夹里面没有文件名字的话，就不需要回车
-        recur(obj_list, flags);
+        // if (size.f_name)
+        //     ft_putchar('\n');  //如果文件夹里面没有文件名字的话，就不需要回车
+        recur(check_list, flags);
     }
 	free_list(&obj_list);
 }
