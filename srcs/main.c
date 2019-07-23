@@ -6,7 +6,7 @@
 /*   By: yijhuang <yijhuang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/05 17:36:10 by yijhuang          #+#    #+#             */
-/*   Updated: 2019/07/22 17:31:55 by yijhuang         ###   ########.fr       */
+/*   Updated: 2019/07/22 21:16:54 by yijhuang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void	print_dir(int ac, char **av, t_flag *flags)
 			// ft_printf("f_amount = %d\n", f_amount);
 			if ((f_amount > 0)&& (flags->l || flags->one)) 
 				f_amount = -1;//把这个值设为-1，代表flags->l || flags->one情况下，第一个文件夹不需要另起一行
-			else if (f_amount == -1 && f_amount > 0 && !flags->l) 
+			else if ((f_amount == -1 || f_amount > 0) && !flags->l) 
 				ft_putchar('\n');//如果之前的print_normal已经有显示非文件夹对象的话，就显示回车，另起一行。
 			ft_putstr(av[arg_index]);
 			ft_putendl(":");
@@ -69,23 +69,16 @@ static void	print_dir(int ac, char **av, t_flag *flags)
 			ft_ls(path, flags);
 			free(path);
 		}
-		if (arg_index + 1 != ac && !flags->R && !flags->l && !flags->one) //当正常显示多个文件夹的时候，最后一个文件夹里面的对象显示完之后要回车。
-			ft_putchar('\n');
+		// if (arg_index + 1 == ac && !flags->R && !flags->l && !flags->one) //当正常显示多个文件夹的时候，最后一个文件夹里面的对象显示完之后要回车。
+		// 	ft_putchar('\n');
 		arg_index++;
 	}
 }
 
 static void	print_a_dir(char **av, t_flag *flags)
 {
-	char	*path;
-		if (ft_isdir(av[arg_index])) //如果输入字符串是文件夹的时候就显示。这个函数之前已经把非文件夹都处理掉了。
-		{
-			path = fix_path(av[arg_index], NULL);
-			// ft_printf("path = %s\n",path);
-			ft_ls(path, flags);
-			// ft_putchar('\n');
-			free(path);
-		}
+	ft_ls(av[arg_index], flags);
+
 }
 
 int main(int ac, char **av)
@@ -98,7 +91,11 @@ int main(int ac, char **av)
     if (arg_index == ac) //如果此时已经走过最后一个参数（-flag是最后一个参数），则说明是当前文件夹操作
         ft_ls(".", &flags);
 	if (arg_index + 1 == ac)
+	{
 		print_a_dir(av, &flags);
+		if (flags.R || flags.l || flags.one)
+			ft_putchar('\n'); 
+	}
 	else
 	{
 		sort_av(ac, &av, arg_index, &flags);//把输入字符串排序，直接修改*av数列里的内容(所以输入是av数列的地址，也就是修改这个地址上的数据)

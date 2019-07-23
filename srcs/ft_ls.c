@@ -6,7 +6,7 @@
 /*   By: yijhuang <yijhuang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/07 13:17:12 by yijhuang          #+#    #+#             */
-/*   Updated: 2019/07/22 17:29:43 by yijhuang         ###   ########.fr       */
+/*   Updated: 2019/07/22 20:07:48 by yijhuang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void ft_ls(char *arg_name, t_flag *flags)
     // ft_printf("w_cols = %d\n", size.w_cols);
     print_objs(check_list, size, flags);
     //下面如果R和l同时存在的话，会继续显示下一层的文件夹（实际没有了），从而产生不必要的报错。 
-    if (total == 0 && errno == 13 && flags->R && flags->l) //如果之前读取这个文件夹时产生错误信息的情况下
+    if (total == 0 && errno == 13 && (flags->R || flags->l)) //如果之前读取这个文件夹时产生错误信息的情况下
     {
         while (*arg_name == '.'|| *arg_name == '/') //错误信息不需要显示./
             arg_name++;

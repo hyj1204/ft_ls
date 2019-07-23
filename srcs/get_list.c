@@ -6,7 +6,7 @@
 /*   By: yijhuang <yijhuang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/09 22:34:48 by yijhuang          #+#    #+#             */
-/*   Updated: 2019/07/22 09:42:09 by yijhuang         ###   ########.fr       */
+/*   Updated: 2019/07/22 20:48:56 by yijhuang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,15 @@ int			get_list(t_arg **obj_list, char *arg_name, t_flag *flags)
 		}
 		else if (!(flags->R) && errno == 13)
 		{
-			ft_printf("ls: %s: %s", arg_name, strerror(errno));
+			while (*arg_name == '.'|| *arg_name == '/') //错误信息不需要显示./
+            	arg_name++;
+        	ft_printf("ls: %s: ", arg_name);
+        	perror(NULL); 
+			// ft_printf("ls: %s: %s", arg_name, strerror(errno));
 			//当没有权限接入的时候，显示报错信息，结尾没有回车
 		}
 		else
 		{
-			ft_printf("opendir fail");
 			save_ftolist(obj_list, arg_name); //把所有只要名字存在的文件（非文件夹）放入list
 		}
 		return (0);
@@ -72,7 +75,8 @@ int	save_ftolist(t_arg **obj_list, char *file_name)
 	tmp->path = ft_strdup(file_name); //保存路径只是为了显示错误信息
 	if (lstat(tmp->path, &(tmp->info)) == -1) 
 	{
-		ft_printf("save_ftolist fial"); 
+		// ft_printf("save_ftolist fial"); 
+		ft_printf("ls: "); 
 		perror(tmp->path);
 		free(tmp->name);
 		free(tmp->path);
@@ -104,7 +108,7 @@ int	save_dtolist(t_arg **list, char *dir_name, struct dirent *ent)
 	if (lstat(tmp->path, &(tmp->info)) == -1) //读取参数文件夹下的对象stat结构，存放在tmp->info里
 	{
 		ft_printf("ls: ");
-		perror("save_dtolist lstat fail");
+		// perror("save_dtolist lstat fail");
 		free(tmp->name);
 		free(tmp->path);
 		free(tmp);

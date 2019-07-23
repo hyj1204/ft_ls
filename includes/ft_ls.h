@@ -6,7 +6,7 @@
 /*   By: yijhuang <yijhuang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/05 17:34:43 by yijhuang          #+#    #+#             */
-/*   Updated: 2019/07/22 14:51:40 by yijhuang         ###   ########.fr       */
+/*   Updated: 2019/07/22 19:47:40 by yijhuang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 #include <sys/acl.h>
 #include <stdint.h> //for uint8
 #include <unistd.h>
+#include <stdlib.h>
+
 
 typedef struct	s_flag
 {
