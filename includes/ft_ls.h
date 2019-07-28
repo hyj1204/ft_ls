@@ -6,7 +6,7 @@
 /*   By: yijhuang <yijhuang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/05 17:34:43 by yijhuang          #+#    #+#             */
-/*   Updated: 2019/07/22 21:27:56 by yijhuang         ###   ########.fr       */
+/*   Updated: 2019/07/28 04:41:02 by yijhuang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct	s_size
 # define MAX(x, y) x > y ? x : y
 
 int				f_amount;
+int				ft_isdir(const char *path);
 //for get_flags
 char			not_flag_char; //不是flag字符而是个普通字符,则用全局变量保存这个字符，用于之后显示报错信息函数用
 int				arg_index;
@@ -80,19 +81,19 @@ t_flag			set_flags(char c, t_flag flags); //把获得flag字符赋值到flags结
 t_flag			getflags(int ac, char **av);
 
 //get_list
-int				get_list(t_arg **obj_list, char *arg_name, t_flag *flags);
+int				get_dir_list(t_arg **obj_list, char *arg_name, t_flag *flags);
 int				save_ftolist(t_arg **obj_list, char *file_name);
 int				save_dtolist(t_arg **list, char *dir_name, struct dirent *ent);
 char			*fix_path(char *dir_name, char *d_name);
 void			add_list(t_arg **list, t_arg *tmp);
 
 //ft_ls
-// void print_list(t_arg *head); //only for test
-void 			ft_ls(char *arg_name, t_flag *flags);
+void 			print_list_test(t_arg *head); //only for test
+int 			ft_ls(char *arg_name, t_flag *flags);
 void			free_list(t_arg **list);
 
 //print_arg
-void		print_arg(t_arg *a, t_size size, t_flag *flags);
+void		print_list(t_arg *a, t_size size, t_flag *flags);
 void		print_permissions(t_arg *list);
 
 //print_objs
@@ -113,6 +114,5 @@ void	reverse_list(t_arg **obj_list);
 void	merge_sort(t_arg **list, t_flag *flags);
 void	split(t_arg *head, t_arg **a, t_arg **b);
 t_arg	*lexical_sorted(t_arg *a, t_arg *b, t_flag *flags);
-int		timecmp(t_arg *a, t_arg *b, t_flag *flags);
 
 #endif

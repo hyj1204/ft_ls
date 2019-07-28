@@ -6,7 +6,7 @@
 /*   By: yijhuang <yijhuang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/11 21:01:44 by yijhuang          #+#    #+#             */
-/*   Updated: 2019/07/22 20:00:36 by yijhuang         ###   ########.fr       */
+/*   Updated: 2019/07/28 03:34:04 by yijhuang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,14 @@ void		print_objs(t_arg *list, t_size size, t_flag *flags)
 			ft_putchar('\n');
 		// print_list(list);
 		// ft_printf("one time\n");
-		print_arg(list, size, flags);
-		if (!flags->R && !flags->l && !flags->one && !list->next) //当正常显示多个文件夹的时候，最后一个文件夹里面的对象显示完之后要回车。
+		print_list(list, size, flags);
+		//下面是显示list显示完内容之后的换行控制
+		if ((flags->one || flags->l) && list->next)
 			ft_putchar('\n');
+		else if (!list->next) //如果是显示的最后一个对象的话，就跳过。不显示回车。
+			list->next = NULL;
+		else
+			ft_putchar(' ');
 		list = list->next; //会把指针一直移到list后一个node
 		checked++;
 	}

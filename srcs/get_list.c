@@ -6,13 +6,13 @@
 /*   By: yijhuang <yijhuang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/09 22:34:48 by yijhuang          #+#    #+#             */
-/*   Updated: 2019/07/22 20:48:56 by yijhuang         ###   ########.fr       */
+/*   Updated: 2019/07/28 00:41:34 by yijhuang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
 
-int			get_list(t_arg **obj_list, char *arg_name, t_flag *flags) 
+int			get_dir_list(t_arg **obj_list, char *arg_name, t_flag *flags) 
 //输入名字和flag把所有的要用到的对象做成一个链表list
 {
 	DIR				*dir; //opendir()返回的结构用于readdir()和closedir()
@@ -20,35 +20,9 @@ int			get_list(t_arg **obj_list, char *arg_name, t_flag *flags)
 	int				total;
 
 	total = 0;
-	errno = 0;
-	if (!(dir = opendir(arg_name))) //如果打开参数名字失败（该文件夹名字不存在/这是一个文件/有权限（13代表没有权限）的时候）
-	{
-		if (errno == 2)//arg_name名字不存在（错误值2）的时候
-		{
-			ft_printf("ls: %s: ", arg_name);
-			perror(NULL); //当没有这个文件名的时候，显示错误信息,结尾会有回车
-		}
-		else if (flags->R || flags->l)
-		{
-			errno;
-		}
-		else if (!(flags->R) && errno == 13)
-		{
-			while (*arg_name == '.'|| *arg_name == '/') //错误信息不需要显示./
-            	arg_name++;
-        	ft_printf("ls: %s: ", arg_name);
-        	perror(NULL); 
-			// ft_printf("ls: %s: %s", arg_name, strerror(errno));
-			//当没有权限接入的时候，显示报错信息，结尾没有回车
-		}
-		else
-		{
-			save_ftolist(obj_list, arg_name); //把所有只要名字存在的文件（非文件夹）放入list
-		}
-		return (0);
-	}
     //在opendir成功的情况下（即arg_name是文件夹名字），读取文件夹里面每一个文件信息（包括隐藏文件）
 	//如果文件夹没有权限接入的时候，也会走到这里，保存文件夹名字，具体read的时候再显示没有权限的错误信息.
+	dir = opendir(arg_name);
 	while ((ent = readdir(dir)) != NULL) //readdir(dir) 会一直读取输入文件夹dir里,所有对象（包括隐藏文件/普通文件/文件夹/没有权限读取的对象）
 	{
 		// printf("d_name = %s\n", ent->d_name);

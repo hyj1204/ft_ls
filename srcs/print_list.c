@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_arg.c                                        :+:      :+:    :+:   */
+/*   print_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yijhuang <yijhuang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/12 22:47:47 by yijhuang          #+#    #+#             */
-/*   Updated: 2019/07/22 19:50:45 by yijhuang         ###   ########.fr       */
+/*   Updated: 2019/07/27 03:40:33 by yijhuang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	print_permissions(t_arg *list)
 
 }
 
-void		print_arg(t_arg *list, t_size size, t_flag *flags)
+void		print_list(t_arg *list, t_size size, t_flag *flags)
 //显示每个对象的信息
 {
 	if (flags->l)
@@ -92,7 +92,6 @@ void		print_arg(t_arg *list, t_size size, t_flag *flags)
 		print_type(list); //显示第一部分的第一个字符，文件类型
 		print_permissions(list);//显示权限字母
 		ft_printf(" %*d ", size.nlink, list->info.st_nlink);
-
 		ft_printf("%-*s  ", size.pw_name, getpwuid(list->info.st_uid)->pw_name);
 		ft_printf("%-*s ", size.gr_name, getgrgid(list->info.st_gid)->gr_name);
 		if (S_ISBLK(list->info.st_mode) || S_ISCHR(list->info.st_mode))
@@ -115,10 +114,5 @@ void		print_arg(t_arg *list, t_size size, t_flag *flags)
 	}
 	else 
 		print_name(list, size.f_name + 3);
-	if ((flags->one || flags->l) && list->next)
-		ft_putchar('\n');
-	else if (!list->next) //如果是显示的最后一个对象的话，就跳过。不显示回车。
-		list->next = NULL;
-	else
-		ft_putchar(' ');
 }
+
