@@ -6,20 +6,21 @@
 /*   By: yijhuang <yijhuang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/12 22:47:47 by yijhuang          #+#    #+#             */
-/*   Updated: 2019/07/27 03:40:33 by yijhuang         ###   ########.fr       */
+/*   Updated: 2019/07/29 03:27:13 by yijhuang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
 
-// static void	print_date(t_arg *a, t_flag *flags)
-// {
-// 	// if (!flags->u)
-// 	// 	write(1, &ctime(&a->info.st_mtime)[4], 12);
-// 	// else
-// 	write(1, &ctime(&a->info.st_atime)[4], 12);
-// 	ft_putchar(' ');
-// }
+static void	print_date(t_arg *a, t_flag *flags)
+{
+	if (flags->u)
+		write(1, &ctime(&a->info.st_atime)[4], 12);
+	else
+		write(1, &ctime(&a->info.st_mtime)[4], 12);
+	ft_putchar(' ');
+}
+
 
 static void	print_type(t_arg *list)
 {
@@ -105,10 +106,7 @@ void		print_list(t_arg *list, t_size size, t_flag *flags)
 		}
 		else
 			ft_printf(" %*d ", size.st_size, list->info.st_size);
-		// ft_printf("ctime = %s\n",ctime(&list->info.st_atime));
-		write(1, &ctime(&list->info.st_mtime)[4], 12);
-		//显示最近被修改的时间
-		ft_putchar(' ');
+		print_date(list, flags);//显示最近被修改/最近接入的时间
 		print_name(list, 0);
 		(S_ISLNK(list->info.st_mode)) ? print_link(list) : 0;
 	}

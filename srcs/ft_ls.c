@@ -6,13 +6,14 @@
 /*   By: yijhuang <yijhuang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/07 13:17:12 by yijhuang          #+#    #+#             */
-/*   Updated: 2019/07/28 01:42:38 by yijhuang         ###   ########.fr       */
+/*   Updated: 2019/07/29 03:21:47 by yijhuang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
 
-int	ft_isdir(const char *path) //检查这个路径的对象是不是一个文件夹
+//检查这个路径的对象是不是一个文件夹
+int	ft_isdir(const char *path)
 {
 	struct stat	statbuf;
 
@@ -21,17 +22,15 @@ int	ft_isdir(const char *path) //检查这个路径的对象是不是一个文�
 	return (S_ISDIR(statbuf.st_mode));
 }
 
-
-void print_list_test(t_arg *head) {
-    t_arg *current_node;
-    current_node = head;
-   	while (current_node) 
-    { 
-        ft_printf("list obj = %s\n", current_node->name);
-        current_node = current_node->next;
-    }
-} //for test
-
+// void print_list_test(t_arg *head) {
+//     t_arg *current_node;
+//     current_node = head;
+//    	while (current_node) 
+//     { 
+//         ft_printf("list obj = %s\n", current_node->name);
+//         current_node = current_node->next;
+//     }
+// } //for test
 
 //检查list里有没有文件夹，有的话，就继续显示这个文件夹里面的内容
 static void		recur(t_arg *obj_list, t_flag *flags)
@@ -76,12 +75,12 @@ static int			check_is_file(t_arg **obj_list, char *arg_name, t_flag *flags, int 
 			ft_printf("ls: %s: ", arg_name);
 			perror(NULL); //当没有这个文件名的时候，显示错误信息,结尾会有回车
 		}
-		else if ((flags->R || flags->l) && errno == 13 && ft_isdir(arg_name))
+		else if (errno == 13 && ft_isdir(arg_name)) //是文件夹的时候
 		{
+            while (arg_name[i] && (arg_name[i] == '.' || arg_name[i] == '/'))
+                        i++;
             if (sub && flags->R)
                 {
-                    while (arg_name[i] && (arg_name[i] == '.' || arg_name[i] == '/'))
-                        i++;
                     ft_printf("\n%s\nls: %s: %s", arg_name, &arg_name[i], strerror(errno));
                 } //当R的时候，直接显示文件夹名和无权限报错信息。
             else
@@ -93,18 +92,17 @@ static int			check_is_file(t_arg **obj_list, char *arg_name, t_flag *flags, int 
                         i++;
         	ft_printf("ls: %s: ", arg_name);
         	perror(NULL); 
-			// ft_printf("ls: %s: %s", arg_name, strerror(errno));
 			//当没有权限接入的时候，显示报错信息，结尾没有回车
 		}
 		else
-		{
-			save_ftolist(obj_list, arg_name); //把所有只要名字存在的文件（非文件夹）放入list
-		}
+        {
+			save_ftolist(obj_list, arg_name);
+            //把所有只要名字存在的文件（非文件夹）放入list
+        }
 		return  1;
 	}
     return 0;
 }
-
 
 //输入文件夹名和flags，根据flag要求显示这个文件夹里的对象
 int ft_ls(char *arg_name, t_flag *flags)
@@ -126,7 +124,7 @@ int ft_ls(char *arg_name, t_flag *flags)
 	sort_list(&obj_list, flags);
     if (sub && flags->R)//当R在子文件夹的状态下，显示各个子文件夹的名字
     {
-        if (flags->l && !obj_list) //当R和l同时存在，并且是空文件夹的时候
+        if (!obj_list) //当遇到空文件夹的时候，不需要多空一行
             ft_printf("\n%s:", arg_name);
         else
             ft_printf("\n%s:\n", arg_name);
@@ -137,14 +135,6 @@ int ft_ls(char *arg_name, t_flag *flags)
 	size = set_size(obj_list); //给t_size结构赋值，获得各个需要显示对象的长度len,用于-l时显示
     // ft_printf("w_cols = %d\n", size.w_cols);
     print_objs(check_list, size, flags);
-    //下面如果R和l同时存在的话，会继续显示下一层的文件夹（实际没有了），从而产生不必要的报错。 
-    // if (total == 0 && errno == 13 && (flags->R || flags->l)) //如果之前读取这个文件夹时产生错误信息的情况下
-    // {
-    //     while (*arg_name == '.'|| *arg_name == '/') //错误信息不需要显示./
-    //         arg_name++;
-    //     ft_printf("ls: %s: ", arg_name);
-    //     perror(NULL); 
-    // }
     sub = 1;
 	if (flags->R)
         recur(check_list, flags);

@@ -6,11 +6,18 @@
 /*   By: yijhuang <yijhuang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/05 22:57:29 by yijhuang          #+#    #+#             */
-/*   Updated: 2019/07/28 04:45:00 by yijhuang         ###   ########.fr       */
+/*   Updated: 2019/07/29 03:29:39 by yijhuang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
+
+static int		timecmp(t_arg *a, t_arg *b, t_flag *flags)
+{
+	if (flags->u)
+		return (b->info.st_atime - a->info.st_atime);
+	return (b->info.st_mtime - a->info.st_mtime);
+}
 
 void	sort_list(t_arg **obj_list, t_flag *flags)
 {
@@ -60,7 +67,7 @@ void			merge_sort(t_arg **list, t_flag *flags)
 	// print_list(b);
 	*list = lexical_sorted(a, b, flags);
 	// ft_printf("print list\n");
-	// print_list(*list);
+	// print_list_test(*list);
 
 }
 
@@ -97,19 +104,52 @@ t_arg	*lexical_sorted(t_arg *a, t_arg *b, t_flag *flags)
 		return (b);
 	if (!b)
 		return (a);
-	if ((flags->t ? (b->info.st_mtime - a->info.st_mtime) : ft_strcmp(a->name, b->name)) < 0)
+	if (flags->t)
+	{ 
+		if (timecmp(a, b, flags) < 0)
+	//比较两个结构体的最后修改时间，正数的时候
+	//如果有tflag的话，就用timecmp函数比较两个结构.小于0时，a是最近被修改的。大于0时b是最近被修改的。
+	//没有tflag的话，就用ft_strcmp函数比较两个结构.小于0时，a名字靠前。大于0时b名字靠前。
+	//判断两个结构体，返回显示靠前的那个结构体
+		{
+			result = a;
+			result->next = lexical_sorted(a->next, b, flags);
+		}
+	else
+		{
+		result = b;
+		result->next = lexical_sorted(a, b->next, flags);
+		}
+	}
+	else 
+		result = lexical_sorted2(a,b);
+
+	return (result);//返回显示靠前的那一个结构
+}
+
+t_arg	*lexical_sorted2(t_arg *a, t_arg *b)
+//找出链表中显示最靠前的结构体
+{
+	t_arg	*result;
+
+	result = NULL;
+	if (!a)
+		return (b);
+	if (!b)
+		return (a);
+	if (ft_strcmp(a->name, b->name) < 0)
 	//比较两个结构体的最后修改时间，正数的时候
 	//如果有tflag的话，就用timecmp函数比较两个结构.小于0时，a是最近被修改的。大于0时b是最近被修改的。
 	//没有tflag的话，就用ft_strcmp函数比较两个结构.小于0时，a名字靠前。大于0时b名字靠前。
 	//判断两个结构体，返回显示靠前的那个结构体
 	{
 		result = a;
-		result->next = lexical_sorted(a->next, b, flags);
+		result->next = lexical_sorted2(a->next, b);
 	}
 	else
 	{
 		result = b;
-		result->next = lexical_sorted(a, b->next, flags);
+		result->next = lexical_sorted2(a, b->next);
 	}
 	return (result);//返回显示靠前的那一个结构
 }

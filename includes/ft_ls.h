@@ -6,7 +6,7 @@
 /*   By: yijhuang <yijhuang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/05 17:34:43 by yijhuang          #+#    #+#             */
-/*   Updated: 2019/07/28 04:41:02 by yijhuang         ###   ########.fr       */
+/*   Updated: 2019/07/29 03:14:06 by yijhuang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@
 #include <sys/acl.h>
 #include <stdint.h> //for uint8
 #include <unistd.h>
-#include <stdlib.h>
 
 
 typedef struct	s_flag
@@ -41,6 +40,7 @@ typedef struct	s_flag
 	uint8_t		R:1;
 	uint8_t		r:1;
 	uint8_t		t:1;
+	uint8_t		u:1;
 	uint8_t		one:1;
 }				t_flag;
 
@@ -88,16 +88,16 @@ char			*fix_path(char *dir_name, char *d_name);
 void			add_list(t_arg **list, t_arg *tmp);
 
 //ft_ls
-void 			print_list_test(t_arg *head); //only for test
+// void 			print_list_test(t_arg *head); //only for test
 int 			ft_ls(char *arg_name, t_flag *flags);
 void			free_list(t_arg **list);
 
-//print_arg
+//print_list
 void		print_list(t_arg *a, t_size size, t_flag *flags);
 void		print_permissions(t_arg *list);
 
 //print_objs
-void	print_objs(t_arg *iter, t_size size, t_flag *flags);
+int	print_objs(t_arg *iter, t_size size, t_flag *flags);
 int		get_line_capacity(int mlen, int cols);
 
 //set size
@@ -114,5 +114,6 @@ void	reverse_list(t_arg **obj_list);
 void	merge_sort(t_arg **list, t_flag *flags);
 void	split(t_arg *head, t_arg **a, t_arg **b);
 t_arg	*lexical_sorted(t_arg *a, t_arg *b, t_flag *flags);
+t_arg	*lexical_sorted2(t_arg *a, t_arg *b);
 
 #endif

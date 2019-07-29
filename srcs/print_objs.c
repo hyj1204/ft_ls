@@ -6,13 +6,13 @@
 /*   By: yijhuang <yijhuang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/11 21:01:44 by yijhuang          #+#    #+#             */
-/*   Updated: 2019/07/28 03:34:04 by yijhuang         ###   ########.fr       */
+/*   Updated: 2019/07/29 03:27:39 by yijhuang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
 
-void		print_objs(t_arg *list, t_size size, t_flag *flags)
+int		print_objs(t_arg *list, t_size size, t_flag *flags)
 {
 	int	checked;
 	int col_num;
@@ -28,8 +28,6 @@ void		print_objs(t_arg *list, t_size size, t_flag *flags)
 		if (!flags->one && !flags->l && checked >= col_num && !(checked % col_num)) 
 		//当没有l-flag时,例如一行需显示4个，当检测5个的时候，checked还是4，此时需要回车一次
 			ft_putchar('\n');
-		// print_list(list);
-		// ft_printf("one time\n");
 		print_list(list, size, flags);
 		//下面是显示list显示完内容之后的换行控制
 		if ((flags->one || flags->l) && list->next)
@@ -41,6 +39,7 @@ void		print_objs(t_arg *list, t_size size, t_flag *flags)
 		list = list->next; //会把指针一直移到list后一个node
 		checked++;
 	}
+	return checked;
 }
 
 int		get_line_capacity(int name_len, int win_cols)

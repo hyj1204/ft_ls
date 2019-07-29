@@ -6,7 +6,7 @@
 /*   By: yijhuang <yijhuang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/05 21:23:12 by yijhuang          #+#    #+#             */
-/*   Updated: 2019/07/20 01:41:17 by yijhuang         ###   ########.fr       */
+/*   Updated: 2019/07/29 03:22:06 by yijhuang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_flag	init_flags(void)
 	flags.R = 0;
 	flags.r = 0;
 	flags.t = 0;
+	flags.u = 0;
 	flags.one = 0;
 	return (flags);
 }
@@ -28,7 +29,6 @@ t_flag	init_flags(void)
 char get_opt(int ac, char **av, char *flags_str)
 //经过这个函数之后全局变量arg_index会走到有-flag参数的后面一个位置。
 //返回值是所遇到的flags的机器码（一个）
-//
 {
 	static int	nextchar; 
 	//静态int 默认从0开始,每一次根据上一次的结果来计算
@@ -62,7 +62,7 @@ char get_opt(int ac, char **av, char *flags_str)
 void		err_print(void) 
 {
 	ft_printf("ls: illegal option -- %c\n", not_flag_char);
-	ft_printf("usage: ls [-Ralrt1] [file ...]\n");
+	ft_printf("usage: ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]\n");
 	exit(1);
 }
 
@@ -80,6 +80,8 @@ t_flag	set_flags(char c, t_flag flags)
 		flags.t = 1;
 	else if (c == '1')
 		flags.one = 1;
+	else if (c == 'u')
+		flags.u = 1;
 	return (flags);
 }
 
@@ -89,7 +91,7 @@ t_flag			getflags(int ac, char **av)
 	char flags_c;
 
 	flags = init_flags(); //初始化flags结构
-	while ((flags_c = get_opt(ac, av, "alRrt1")) != -1)
+	while ((flags_c = get_opt(ac, av, "alRrt1u")) != -1)
 	//flags_c是getopt的返回值，这个返回值获得的flag字符。每次getopt读出来有值的情况
 	//getopt函数会以此读取每个一个输入av字符串，读完一个之后会让全局变量arg_index++，使得while可以继续判断下一个参数是不是flag
 	{
