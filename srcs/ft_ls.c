@@ -17,7 +17,6 @@ int	ft_isdir(const char *path)
 {
 	struct stat	statbuf;
 
-	errno = 0;  //因为后面会产生报错信息，所以需要先清零前面的报错
 	if (stat(path, &statbuf) != 0)
 		return (0);
 	return (S_ISDIR(statbuf.st_mode));
