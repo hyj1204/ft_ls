@@ -57,12 +57,11 @@ static void	print_dir(int ac, char **av, t_flag *flags)
 			{
 				 ft_printf("\n\n");
 				 f_amount = 0;
-				 first_dir = 1;
 			}
-			else if (first_dir == 1)
+			first_dir = 1;
+			if (first_dir == 1)
 				ft_printf("\n");
-			ft_putstr(av[arg_index]);
-			ft_putendl(":");
+			ft_printf("%s:\n", av[arg_index]);
 			path = fix_path(av[arg_index], NULL);
 			// ft_printf("path = %s\n",path);
 			ft_ls(path, flags);
