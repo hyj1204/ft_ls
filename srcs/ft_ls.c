@@ -6,7 +6,7 @@
 /*   By: yijhuang <yijhuang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/07 13:17:12 by yijhuang          #+#    #+#             */
-/*   Updated: 2019/07/29 03:21:47 by yijhuang         ###   ########.fr       */
+/*   Updated: 2019/07/31 20:33:27 by yijhuang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ static int			check_is_file(t_arg **obj_list, char *arg_name, t_flag *flags, int 
         }
 		return  1;
 	}
+    closedir(dir);
     return 0;
 }
 
