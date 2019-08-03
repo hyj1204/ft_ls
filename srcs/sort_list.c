@@ -16,7 +16,10 @@ static int		timecmp(t_arg *a, t_arg *b, t_flag *flags)
 {
 	if (flags->u)
 		return (b->info.st_atime - a->info.st_atime);
-	return (b->info.st_mtime - a->info.st_mtime);
+	if (b->info.st_mtime == a->info.st_mtime) //修改时间（秒级）相同的时候，比较其毫秒级信息
+		return (b->info.st_mtimespec.tv_nsec - a->info.st_mtimespec.tv_nsec);
+	else
+		return (b->info.st_mtime - a->info.st_mtime);
 }
 
 void	sort_list(t_arg **obj_list, t_flag *flags)
